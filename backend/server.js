@@ -1,9 +1,15 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import generateRoute from "./routes/generate.js";
+
+dotenv.config();
+
 const app = express();
-const generate = require("./routes/generate");
-require("./workers/contentWorker");
-
+app.use(cors());
 app.use(express.json());
-app.use("/generate", generate);
 
-app.listen(5000, () => console.log("Backend running on port 5000"));
+app.use("/api/generate", generateRoute);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

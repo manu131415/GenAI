@@ -1,8 +1,6 @@
-const { ChatOllama } = require("langchain/chat_models/ollama");
+import { ChatOllama } from "@langchain/ollama";
 
-const textModel = new ChatOllama({
-  model: "llama3",
-  temperature: 0.7,
+export const textModel = new ChatOllama({
+  model: "llama3", // Make sure you pulled this in Ollama
+  baseUrl: "http://localhost:11434",
 });
-
-module.exports = textModel;

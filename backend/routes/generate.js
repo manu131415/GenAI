@@ -1,14 +1,31 @@
-const express = require("express");
-const { Queue } = require("bullmq");
+import express from "express";
+import { generateBlog } from "../langchain/pipelines/blogGenerator.js";
+import { generateImage } from "../langchain/pipelines/imageGenerator.js";
+import { enhanceSEO } from "../langchain/pipelines/seoEnhancer.js";
 
 const router = express.Router();
-const queue = new Queue("generateContent");
 
 router.post("/", async (req, res) => {
-  const job = await queue.add("job", { prompt: req.body.prompt });
-  const result = await job.waitUntilFinished();
+  try {
+    const { prompt } = req.body;
 
-  res.json(result);
+    // 1️⃣ Generate blog
+    const blogContent = await generateBlog(prompt);
+
+    // 2️⃣ Enhance SEO
+    const seoBlog = enhanceSEO(blogContent);
+
+    // 3️⃣ Generate thumbnail image
+    const imageBase64 = await generateImage(prompt);
+
+    res.json({
+      seoBlog,
+      imageBase64,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Generation failed" });
+  }
 });
 
-module.exports = router;
+export default router;

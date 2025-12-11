@@ -1,9 +1,24 @@
-const textModel = require("../models/textModel");
+import { textModel } from "../models/textModel.js";
 
-module.exports = async function generateBlog(prompt) {
-  const res = await textModel.invoke([
-    ["human", `Write a SEO optimized blog on: ${prompt}`]
+export const generateBlog = async (topic) => {
+  const prompt = `
+You are an expert SEO content writer.
+
+Task: Generate a full SEO optimized blog about "${topic}"
+Include:
+- Catchy title
+- Meta description
+- Headings (H1-H3)
+- Long article
+- FAQ
+- Social media captions (Instagram, Twitter, LinkedIn)
+
+Return as JSON with keys: title, meta, headings, article, faq, socialMedia
+`;
+
+  const response = await textModel.invoke([
+    { role: "user", content: prompt },
   ]);
 
-  return res.content;
+  return response.content; // JSON string
 };
