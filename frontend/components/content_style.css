@@ -1,0 +1,28 @@
+.option-value{
+    border: 1px solid #140c0c;
+    padding: 8px;
+    border-radius: 4px;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    color: #140c0c;
+    border-radius: 16px;
+}
+.generate-button{
+    background-color: #140c0c;
+    color: #ffffff;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+}
+.generate-button:hover{
+    background-color: #5a5353;
+    color: rgb(241, 239, 239);
+    transition: all 0.3s ease;
+}
