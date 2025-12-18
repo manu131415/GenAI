@@ -1,24 +1,69 @@
 import { textModel } from "../models/textModel.js";
 
+/**
+ * Generates an SEO-optimized blog as a structured JSON object
+ * @param {string} topic
+ * @returns {Promise<Object>}
+ */
 export const generateBlog = async (topic) => {
+  if (!topic || typeof topic !== "string") {
+    throw new Error("Topic must be a non-empty string");
+  }
+
   const prompt = `
 You are an expert SEO content writer.
 
-Task: Generate a full SEO optimized blog about "${topic}"
-Include:
-- Catchy title
-- Meta description
-- Headings (H1-H3)
-- Long article
-- FAQ
-- Social media captions (Instagram, Twitter, LinkedIn)
+IMPORTANT RULES:
+- Return ONLY valid JSON
+- No markdown
+- No explanations
+- No text before or after JSON
+- No backticks
 
-Return as JSON with keys: title, meta, headings, article, faq, socialMedia
+JSON schema:
+{
+  "title": "string",
+  "meta": "string",
+  "headings": ["string"],
+  "article": "string",
+  "faq": [
+    {
+      "question": "string",
+      "answer": "string"
+    }
+  ],
+  "socialMedia": {
+    "instagram": "string",
+    "twitter": "string",
+    "linkedin": "string"
+  }
+}
+
+Topic: "${topic}"
 `;
 
-  const response = await textModel.invoke([
-    { role: "user", content: prompt },
-  ]);
+  let response;
 
-  return response.content; // JSON string
+  try {
+    response = await textModel.invoke([
+      {
+        role: "user",
+        content: prompt,
+      },
+    ]);
+  } catch (err) {
+    console.error("LLM invocation failed:", err);
+    throw new Error("Failed to generate blog content");
+  }
+
+  if (!response || !response.content) {
+    throw new Error("Empty response from LLM");
+  }
+
+  try {
+    return JSON.parse(response.content);
+  } catch (err) {
+    console.error("❌ Invalid JSON from LLM:\n", response.content);
+    throw new Error("LLM returned invalid JSON format");
+  }
 };
