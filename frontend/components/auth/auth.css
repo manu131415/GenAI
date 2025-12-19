@@ -5,6 +5,32 @@
   justify-content: center;
   align-items: center;
   background: radial-gradient(circle at top, #0f0f1a, #020202);
+  position: relative;
+}
+
+/* ================= CLOSE BUTTON ================= */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #7f3cff;
+  background: rgba(127, 60, 255, 0.1);
+  color: #a855f7;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(127, 60, 255, 0.2);
+  box-shadow: 0 0 15px rgba(127, 60, 255, 0.4);
+  border-color: #a855f7;
 }
 
 /* ================= AUTH CONTAINER ================= */
@@ -33,8 +59,8 @@
     linear-gradient(
       90deg,
       transparent 30%,
-      #00eaff 40%,
-      #7f3cff 50%,
+      #c51ec8 40%,
+      #a855f7 50%,
       transparent 60%
     );
   background-size: 300% 100%;
@@ -87,12 +113,13 @@
   top: 0;
   width: 50%;
   height: 100%;
-  padding: 40px;
+  padding: 50px 30px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 14px;
+  align-items: center;
+  gap: 10px;
   transition: transform 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
   z-index: 2;
 }
@@ -101,35 +128,31 @@
 .socials {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 0;
+  margin: 2px 0 0 0;
   align-items: center;
+  width: 100%;
+  
 }
 
 .social-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 80%;
-  max-width: 380px;
-  padding: 8px 12px;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 280px;
+  padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid #7f3cff;
-  background: linear-gradient(180deg, rgba(127,60,255,0.06), rgba(127,60,255,0.02));
+  border: none;
+  background: #000000;
   color: white;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .social-btn svg { flex: 0 0 auto; }
-
-
-.social-btn.google {
-  /* slightly purple-tinted background to match purple border */
-  background: linear-gradient(180deg, rgba(127,60,255,0.06), rgba(127,60,255,0.02));
-
-}
 
 .social-btn:hover {
   transform: translateY(-1px);
@@ -138,6 +161,12 @@
 
 .social-btn span { flex: 1; text-align: center; }
 
+.form-panel .social-btn {
+  background: #000000 !important;
+  width: 100%;
+  max-width: 280px;
+}
+
 /* ============== OR SEPARATOR ============== */
 .or-separator {
   display: flex;
@@ -145,7 +174,7 @@
   gap: 12px;
   width: 100%;
   justify-content: center;
-  margin: 8px 0 4px;
+  margin: 4px 0 6px;
 }
 
 .or-separator::before,
@@ -213,11 +242,14 @@
 
 /* ================= INPUTS ================= */
 .form-panel input {
-  padding: 10px;
+  padding: 10px 10px 10px 40px;
   border-radius: 6px;
   border: none;
   background: #1c1c1c;
   color: white;
+  width: 110%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
 .form-panel input:focus {
@@ -229,9 +261,13 @@
   padding: 10px;
   border-radius: 20px;
   border: none;
-  background: linear-gradient(90deg, #7f3cff, #a855f7);
+  background: linear-gradient(90deg, #c51ec8, #a855f7);
   color: white;
   cursor: pointer;
+  width: 60%;
+  max-width: 350px;
+  box-sizing: border-box;
+  font-weight: 600;
 }
 
 .form-panel button:hover {
@@ -240,18 +276,29 @@
 
 /* ================= TEXT ================= */
 .link {
-  color: #a855f7;
+  background: linear-gradient(#c51ec8, #a855f7);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
   cursor: pointer;
 }
 
 h1 {
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-size: 2.9rem;
+  font-weight: 800;
 }
 
 h2 {
-  font-size: 1.9rem;
+  
+  font-size: 2.4rem;
   font-weight: 600;
+}
+.form-panel h2 {
+  background: linear-gradient(#c51ec8, #a855f7);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+
 }
 
 p {
