@@ -1,27 +1,90 @@
+/* ================= PAGE ================= */
 .auth-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0b0b0b;
+  background: radial-gradient(circle at top, #0f0f1a, #020202);
 }
 
+/* ================= AUTH CONTAINER ================= */
 .auth-container {
   position: relative;
   width: 900px;
   height: 480px;
   background: #111;
   border-radius: 12px;
-  overflow: hidden; /* VERY IMPORTANT */
+  overflow: hidden; /* REQUIRED for original toggle */
 }
 
+/* ================= NEON BORDER (VISIBLE & SAFE) ================= */
+.auth-container::before,
+.auth-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 5;
 
-/* Forms */
+  /* THIS is the trick that makes it visible */
+  padding: 2px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 30%,
+      #00eaff 40%,
+      #7f3cff 50%,
+      transparent 60%
+    );
+  background-size: 300% 100%;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  filter: drop-shadow(0 0 8px rgba(127,60,255,0.9));
+}
+
+/* SAME DIRECTION, OFFSET */
+.auth-container::before {
+  animation: neonChase 6s linear infinite;
+}
+
+.auth-container::after {
+  animation: neonChasee 6s linear infinite;
+  animation-delay: -2s; /* separation */
+  /* animation-direction: reverse; */
+  opacity: 0.75;
+}
+
+/* ================= NEON ANIMATION ================= */
+@keyframes neonChase {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@keyframes neonChasee {
+  0% {
+    background-position: 300% 50%;
+  }
+  100% {
+     background-position: 0% 50%;
+   
+  }
+}
+
+/* ================= FORMS (ORIGINAL LOGIC – UNTOUCHED) ================= */
 .form-panel {
   background: #111;
   position: absolute;
   top: 0;
-  
   width: 50%;
   height: 100%;
   padding: 40px;
@@ -30,40 +93,99 @@
   flex-direction: column;
   justify-content: center;
   gap: 14px;
-  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
   z-index: 2;
-
 }
 
-.form-panel input {
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
+/* ================ SOCIAL BUTTONS ================ */
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 6px;
+  align-items: center;
 }
 
-.form-panel button {
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(90deg, #7f3cff, #a855f7);
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 80%;
+  max-width: 380px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #7f3cff;
+  background: linear-gradient(180deg, rgba(127,60,255,0.06), rgba(127,60,255,0.02));
   color: white;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
-/* Login default */
+.social-btn svg { flex: 0 0 auto; }
+
+
+.social-btn.google {
+  /* slightly purple-tinted background to match purple border */
+  background: linear-gradient(180deg, rgba(127,60,255,0.06), rgba(127,60,255,0.02));
+
+}
+
+.social-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(127,60,255,0.18);
+}
+
+.social-btn span { flex: 1; text-align: center; }
+
+/* ============== OR SEPARATOR ============== */
+.or-separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  margin: 8px 0 4px;
+}
+
+.or-separator::before,
+.or-separator::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  max-width: 120px;
+}
+
+.or-separator span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #0f0f11;
+  color: #a855f7;
+  border: 1px solid #7f3cff;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
 .login {
   left: 0;
   transform: translateX(0);
 }
 
-/* Signup starts hidden */
 .signup {
   left: 50%;
   transform: translateX(100%);
 }
 
-/* Purple panel */
+.auth-container.active .login {
+  transform: translateX(-100%);
+}
+
+.auth-container.active .signup {
+  transform: translateX(0);
+}
+
+/* ================= OVERLAY PANEL ================= */
 .overlay-panel {
   position: absolute;
   right: 0;
@@ -77,39 +199,59 @@
   align-items: center;
   padding: 40px;
   text-align: center;
-  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    z-index: 3;
-}
+  transition: transform 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+  z-index: 3;
 
-/* ---------- ACTIVE STATE ---------- */
-
-.auth-container.active .login {
-  transform: translateX(-100%);
-}
-
-.auth-container.active .signup {
-  transform: translateX(0);
+  box-shadow:
+    inset 0 0 60px rgba(255,255,255,0.12),
+    0 0 60px rgba(127,60,255,0.45);
 }
 
 .auth-container.active .overlay-panel {
   transform: translateX(-100%);
 }
 
+/* ================= INPUTS ================= */
+.form-panel input {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1c1c1c;
+  color: white;
+}
+
+.form-panel input:focus {
+  outline: 2px solid #7f3cff;
+}
+
+/* ================= BUTTON ================= */
+.form-panel button {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(90deg, #7f3cff, #a855f7);
+  color: white;
+  cursor: pointer;
+}
+
+.form-panel button:hover {
+  box-shadow: 0 10px 25px rgba(127,60,255,0.4);
+}
+
+/* ================= TEXT ================= */
 .link {
   color: #a855f7;
   cursor: pointer;
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 700;
-  margin-bottom: 10px;
 }
 
 h2 {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
 p {
@@ -117,50 +259,15 @@ p {
   opacity: 0.85;
 }
 
-.form-panel input {
-  background: #1c1c1c;
-  color: white;
-  transition: border 0.3s;
+.error {
+  color: #ff4d4d;
 }
 
-.form-panel input:focus {
-  outline: 2px solid #7f3cff;
-}
-
-.form-panel button {
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.form-panel button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(127, 60, 255, 0.4);
-}
-
-
-.overlay-panel p {
-  max-width: 260px;
-  line-height: 1.4;
-}
-
-/* .ghost-btn {
-  margin-top: 20px;
-  padding: 10px 30px;
-  border-radius: 20px;
-  border: 2px solid white;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-}
-.ghost-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-} */
-
-
+/* ================= MOBILE (ORIGINAL BEHAVIOR) ================= */
 @media (max-width: 768px) {
   .auth-container {
     width: 90%;
     height: auto;
-    flex-direction: column;
   }
 
   .form-panel {
@@ -171,8 +278,6 @@ p {
 
   .signup {
     display: none;
-    left: 0;
-    transform: translateX(0);
   }
 
   .auth-container.active .signup {
@@ -187,5 +292,3 @@ p {
     display: none;
   }
 }
-
-
