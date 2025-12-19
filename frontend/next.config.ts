@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Enable SWC minification for faster builds
-  swcMinify: true,
+ 
   
   // Optimize production builds
   productionBrowserSourceMaps: false,
