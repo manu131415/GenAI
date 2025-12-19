@@ -1,28 +1,28 @@
 import express from "express";
-import { ChatOllama } from "@langchain/ollama";
+import { generateText } from "../langchain/models/textModel.js";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { messages, model } = req.body;
 
-    const llm = new ChatOllama({
-      model: "llama3",
-      baseUrl: "http://localhost:11434"
-    });
+    // messages = [{ role: "user", content: "..." }, ...]
+    const prompt = messages
+      .map(m => `${m.role.toUpperCase()}: ${m.content}`)
+      .join("\n");
 
-    const response = await llm.invoke([
-      { role: "user", content: message }
-    ]);
+    const reply = await generateText(
+      prompt,
+      model || "meta-llama/Llama-3.1-8B-Instruct"
+    );
 
     res.json({
-      reply: response.content
+      success: true,
+      reply
     });
-
   } catch (err) {
-    console.error("❌ Chat Error:", err);
-    res.status(500).json({ error: "Chat failure" });
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

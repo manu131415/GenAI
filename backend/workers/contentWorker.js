@@ -1,14 +1,9 @@
-const { Worker } = require("bullmq");
-const generateBlog = require("../langchain/pipelines/blogGenerator");
-const generateImages = require("../langchain/pipelines/imageGenerator");
+import { generateBlog } from "../langchain/pipelines/blogGenerator.js";
 
-const worker = new Worker("generateContent", async job => {
-  const prompt = job.data.prompt;
+export async function contentWorker(job) {
+  const { type, topic } = job;
 
-  const blog = await generateBlog(prompt);
-  const images = await generateImages(prompt);
-
-  return { blog, images };
-});
-
-module.exports = worker;
+  if (type === "blog") {
+    return await generateBlog(topic);
+  }
+}

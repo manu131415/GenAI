@@ -1,15 +1,17 @@
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import chatRoute from "./routes/chat.js";
 import generateRoute from "./routes/generate.js";
-
-dotenv.config();
+import cors from "cors";
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
+app.use("/api/chat", chatRoute);
 app.use("/api/generate", generateRoute);
+app.use(cors({
+    origin: "http://localhost:3000", // Your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(5000, () => console.log("Server running on port 5000"));
