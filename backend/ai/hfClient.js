@@ -1,6 +1,6 @@
-export const callHF = async (prompt) => {
-  const response = await fetch(
-    `https://api-inference.huggingface.co/models/${process.env.HF_MODEL}`,
+export const callHF = async (prompt, model) => {
+  const res = await fetch(
+    `https://api-inference.huggingface.co/models/${model}`,
     {
       method: "POST",
       headers: {
@@ -10,27 +10,20 @@ export const callHF = async (prompt) => {
       body: JSON.stringify({
         inputs: prompt,
         parameters: {
-          max_new_tokens: 800,
+          max_new_tokens: 900,
           temperature: 0.3,
-          return_full_text: false
-        }
+          return_full_text: false,
+        },
       }),
     }
   );
 
-  const data = await response.json();
+  const data = await res.json();
 
-  console.log("HF RAW RESPONSE:", JSON.stringify(data, null, 2));
-
-  // 🔥 IMPORTANT: HF returns ARRAY
   if (Array.isArray(data) && data[0]?.generated_text) {
     return data[0].generated_text;
   }
 
-  // HF error case
-  if (data?.error) {
-    throw new Error(data.error);
-  }
-
-  throw new Error("Empty or invalid HF response");
+  if (data?.error) throw new Error(data.error);
+  throw new Error("Invalid HF response");
 };
