@@ -1,14 +1,16 @@
 import express from "express";
-import { contentWorker } from "../workers/contentWorker.js";
+import { generateBlog } from "../ai/contentService.js";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { type, topic } = req.body;
-
-  const result = await contentWorker({ type, topic });
-
-  res.json({ success: true, data: result });
+  try {
+    const { topic } = req.body;
+    const result = await generateBlog(topic);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;

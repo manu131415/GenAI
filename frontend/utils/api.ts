@@ -1,23 +1,21 @@
-export async function generateContent(prompt: string) {
+export async function generateContent(topic: string) {
   try {
     const res = await fetch("http://localhost:5000/api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ type: "blog", topic: prompt }),
+      body: JSON.stringify({ topic }),
     });
 
     if (!res.ok) {
-      const text = await res.text(); // for debugging non-JSON
-      throw new Error(`HTTP error! Status: ${res.status}, Response: ${text}`);
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text}`);
     }
 
-    const data = await res.json();
-    console.log("API Response:", data);
-    return data;
-  } catch (err: any) {
-    console.error("generateContent error:", err);
-    throw err; // re-throw so frontend can show error
+    return await res.json();
+  } catch (error) {
+    console.error("generateContent error:", error);
+    throw error;
   }
 }
