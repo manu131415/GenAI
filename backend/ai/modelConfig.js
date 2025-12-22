@@ -1,6 +1,6 @@
 export const MODELS = {
-  blog: "meta-llama/Llama-3.1-8B-Instruct",
-  seo: "Qwen/Qwen2.5-7B-Instruct",
-  fast: "mistralai/Mistral-7B-Instruct",
-  light: "google/gemma-7b-it",
+  blog: "mistralai/Mistral-7B-Instruct-v0.2", // public
+  seo: "Qwen/Qwen2.5-1.5B-Instruct",          // public & fast
+  fast: "gpt2",               // public
+  light: "gpt2",                              // always works
 };
