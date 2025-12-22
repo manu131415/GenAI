@@ -1,0 +1,359 @@
+/* ===============================
+   PAGE BASE + BACKGROUND
+================================ */
+
+.create-page {
+  position: relative;
+  min-height: 100vh;
+  background: #0b0b10;
+  color: #ffffff;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+/* Ambient animated background */
+.create-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(155, 92, 255, 0.12),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(95, 44, 255, 0.10),
+      transparent 50%
+    );
+  animation: ambientMove 20s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.create-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes ambientMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-18px, 12px);
+  }
+  100% {
+    transform: translate(18px, -12px);
+  }
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.create-header {
+  height: 64px;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1f1f2e;
+  background: rgba(11, 11, 16, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.create-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #9b5cff;
+}
+
+.create-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.create-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9b5cff, #5f2cff);
+}
+
+/* ===============================
+   HERO / PROMPT SECTION
+================================ */
+
+.create-hero {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.create-hero h1 {
+  font-size: 44px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #9b5cff, #c77dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.create-hero p {
+  margin-top: 10px;
+  margin-bottom: 28px;
+  color: #a1a1b3;
+  font-size: 15px;
+}
+
+/* ===============================
+   PROMPT CONTAINER (MAIN FIX)
+================================ */
+
+.prompt-container {
+  width: 100%;
+  max-width: 760px;
+  background: #12121a;
+  border: 1px solid #2a2a3d;
+  border-radius: 18px;
+  padding: 16px;
+  text-align: left;
+}
+
+/* TEXTAREA */
+.prompt-container textarea {
+  width: 100%;
+  min-height: 120px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  resize: none;
+  outline: none;
+  font-size: 15px;
+  line-height: 1.6;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   PROMPT ACTIONS
+================================ */
+
+.prompt-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  gap: 12px;
+}
+
+/* OPTIONS */
+.prompt-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 13px;
+  color: #bdbdd7;
+}
+
+.prompt-options span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.prompt-options span:hover {
+  color: #c7b8ff;
+  opacity: 1;
+}
+
+/* GENERATE BUTTON */
+.prompt-actions button {
+  height: 38px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #9b5cff, #5f2cff);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.prompt-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(155, 92, 255, 0.25);
+}
+
+.prompt-actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===============================
+   LOADER
+================================ */
+
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===============================
+   HISTORY SECTION
+================================ */
+
+.create-history {
+  padding: 48px 64px;
+  background: #0f0f17;
+}
+
+.create-history h2 {
+  margin-bottom: 24px;
+  color: #c7b8ff;
+}
+
+.create-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.create-card {
+  background: #141420;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid #1f1f2e;
+}
+
+.create-preview {
+  height: 140px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(155, 92, 255, 0.3),
+    rgba(95, 44, 255, 0.1)
+  );
+  margin-bottom: 10px;
+}
+
+.create-card p {
+  font-size: 13px;
+  color: #bdbdd7;
+}
+
+
+/* ===============================
+   PROFILE DROPDOWN MENU
+================================ */
+
+.profile-menu {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 240px;
+  background: #141420;
+  border: 1px solid #1f1f2e;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  animation: fadeIn 0.15s ease;
+  z-index: 50;
+}
+
+/* User info */
+.profile-info {
+  padding: 10px;
+  border-bottom: 1px solid #1f1f2e;
+}
+
+.profile-info strong {
+  display: block;
+  font-size: 14px;
+}
+
+.profile-info span {
+  font-size: 12px;
+  color: #a1a1b3;
+}
+
+/* Actions */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.profile-actions button {
+  background: transparent;
+  border: none;
+  color: #e6e6ff;
+  padding: 10px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.profile-actions button:hover {
+  background: rgba(155, 92, 255, 0.12);
+}
+
+/* Logout */
+.profile-logout {
+  margin-top: 8px;
+  border-top: 1px solid #1f1f2e;
+}
+
+.profile-logout button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: #ff7b7b;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.profile-logout button:hover {
+  background: rgba(255, 123, 123, 0.1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

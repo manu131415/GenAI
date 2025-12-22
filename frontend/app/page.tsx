@@ -1,18 +1,19 @@
-import dynamic from "next/dynamic";
+"use client";
+
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
+import { motion } from "framer-motion";
+import { Suspense } from "react";
+import HeroSection from "@/components/home/HeroSection";
 import GeneratorSection from "@/components/home/GeneratorSection";
+import Mascot3DSection from "@/components/home/Mascot3DSection";
 
-// Lazy load HeroSection to improve initial page load
-const HeroSection = dynamic(() => import("@/components/home/HeroSection"), {
-  loading: () => <div className="min-h-screen bg-black" />,
-});
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <main className="home-root">
+    <main className="min-h-screen bg-black">
       <HeroSection />
-      <section id="generator" className="min-h-screen bg-black">
-        <GeneratorSection />
-      </section>
+      <Mascot3DSection />
+      <GeneratorSection />
     </main>
   );
 }
