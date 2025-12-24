@@ -1,15 +1,16 @@
 import express from "express";
-import { generateContent } from "../ai/contentService.js";
+import { generateSpeech } from "../ai/pythonAiClient.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/tts", async (req, res) => {
+  const { text } = req.body;
+
   try {
-    const { topic } = req.body;
-    const result = await generateContent(topic);
+    const result = await generateSpeech(text);
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "AI generation failed" });
   }
 });
 
