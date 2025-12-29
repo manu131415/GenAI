@@ -15,7 +15,7 @@ export default function GeneratorSection() {
     setLoading(true);
     try {
       const data = await generateContent(payload);
-      setResult(data.content);
+      setResult(data.output);
     } finally {
       setLoading(false);
     }

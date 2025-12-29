@@ -1,21 +1,26 @@
-export async function generateContent(topic: string) {
-  try {
-    const res = await fetch("http://localhost:5000/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ topic }),
-    });
+interface GenerateRequest {
+  topic: string;
+  tone: string;
+  length: string;
+}
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
-    }
+export async function generateContent(data: GenerateRequest) {
+  const res = await fetch("http://127.0.0.1:8000/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      prompt: data.topic,
+      tone: data.tone,
+      length: data.length,
+    }),
+  });
 
-    return await res.json();
-  } catch (error) {
-    console.error("generateContent error:", error);
-    throw error;
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP ${res.status}: ${text}`);
   }
+
+  return await res.json();
 }
