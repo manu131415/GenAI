@@ -14,12 +14,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class PromptRequest(BaseModel):
+class GenerateRequest(BaseModel):
     prompt: str
+    tone: str
+    length: str
 
 @app.post("/generate")
-def generate(req: PromptRequest):
-    output = generate_text(req.prompt)
+def generate(req: GenerateRequest):
+    output = generate_text(req.prompt, req.tone, req.length)
     return {"output": output}
 
 @app.get("/")
