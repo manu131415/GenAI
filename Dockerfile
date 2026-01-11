@@ -20,24 +20,21 @@ FROM python:3.12-slim AS backend-build
 
 WORKDIR /app
 
-# Copy backend requirements and install
-COPY backend/requirements.txt ./backend/requirements.txt
-RUN pip install --no-cache-dir -r backend/requirements.txt
-
-# Copy backend and ai-service code
+# Copy backend and ai_service code
 COPY backend/ ./backend/
-COPY ai-service/ ./ai-service/
+COPY ai_service/ ./ai_service/
 
 # ==============================
 # Stage 3: Production Image
 # ==============================
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.12
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.10
+
 
 WORKDIR /app
 
-# Copy backend and ai-service from build stage
+# Copy backend and ai_service from build stage
 COPY --from=backend-build /app/backend /app/backend
-COPY --from=backend-build /app/ai-service /app/ai-service
+COPY --from=backend-build /app/ai_service /app/ai_service
 
 # Copy frontend build (Next.js static build)
 COPY --from=frontend-build /app/frontend/.next /app/frontend/.next
@@ -45,6 +42,6 @@ COPY --from=frontend-build /app/frontend/public /app/frontend/public
 
 # Expose port
 EXPOSE 80
+ENV APP_MODULE=ai_service.main:app
 
-# Start FastAPI
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "80"]
+
